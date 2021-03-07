@@ -7,11 +7,6 @@ from uuid import uuid4
 from werkzeug.utils import secure_filename
 
 
-
-
-
-
-
 ALLOWED_EXTENSIONS = ['txt', 'xml']
 PATH_TO_DATA = "/data/"
 UPLOAD_PREFIX = 'upload/'
@@ -38,9 +33,6 @@ ENDPOINT_QUERY = "ENDPOINT_QUERY"
 RESTRICTED_MODE = environ.get("RESTRICTED_MODE")
 
 
-
-
-
 def md5sum(filename):
     with open(filename, mode='rb') as f:
         d = hashlib.md5()
@@ -50,6 +42,7 @@ def md5sum(filename):
                 break
             d.update(buf)
         return d.hexdigest()
+
 
 def put_file(filename, contents, contents_length=None):
     if not isinstance(contents, BytesIO):
@@ -67,9 +60,11 @@ def put_file(filename, contents, contents_length=None):
         f.write(contents.read())
     return md5sum(PATH_TO_DATA + filename)
 
+
 def get_file(filename):
     with open(PATH_TO_DATA + filename) as f:
         return f.read()
+
 
 def list_files(prefix = None, recursive=True):
     if recursive:
@@ -83,10 +78,12 @@ def list_files(prefix = None, recursive=True):
         else:
             return list(f for f in listdir(PATH_TO_DATA + prefix) if path.isfile(PATH_TO_DATA + prefix + f))
 
+
 def allowed_file(filename, allowed_extensions=None):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() \
            in (allowed_extensions or ALLOWED_EXTENSIONS)
+
 
 def get_upload_form():
     return '''
@@ -98,6 +95,7 @@ def get_upload_form():
          <input type=submit value=Upload>
     </form>
     '''
+
 
 def get_task_status(task_id):
     task = result.AsyncResult(str(task_id))
@@ -113,6 +111,7 @@ def get_task_status(task_id):
         "error": str(task.traceback)
     }
 
+
 def save_file(upload_file):
     filename = UPLOAD_PREFIX + secure_filename(upload_file.filename)
     file_bytes = BytesIO()
@@ -125,6 +124,7 @@ def save_file(upload_file):
         'file_size': file_size
     }
 
+
 def save_file_simple(file_name, file_contents, file_size):
     filename = UPLOAD_PREFIX + secure_filename(file_name)
     put_file(filename, file_contents, file_size)
@@ -132,6 +132,7 @@ def save_file_simple(file_name, file_contents, file_size):
         'file_id': filename,
         'file_size': file_size
     }
+
 
 def add_processed_file(processed_file_id, contents, extension=None):
     if not processed_file_id:

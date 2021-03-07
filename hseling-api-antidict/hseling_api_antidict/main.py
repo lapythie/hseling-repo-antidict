@@ -21,7 +21,6 @@ if os.environ.get('HSELING_API_ANTIDICT_SETTINGS'):
     app.config.from_envvar('HSELING_API_ANTIDICT_SETTINGS')
 
 
-
 if not app.debug:
     import logging
     from logging.handlers import TimedRotatingFileHandler
@@ -60,11 +59,11 @@ def do_process_task(file_ids_list):
             ))
     return processed_file_ids
 
+
 @app.route('/api/healthz')
 def healthz():
     app.logger.info('Health checked')
     return jsonify({"status": "ok", "message": "hseling-api-antidict"})
-
 
 
 @api.dispatcher.add_method
@@ -83,7 +82,6 @@ def upload_file(file_name, file_contents_base64):
     return boilerplate.save_file_simple(file_name, file_contents, file_size)
 
 
-
 @api.dispatcher.add_method
 def get_file(file_id):
     if file_id not in boilerplate.list_files(recursive=True):
@@ -97,16 +95,15 @@ def get_file(file_id):
             "file_contents_base64": file_contents_base64}
 
 
-
 @api.dispatcher.add_method
 def list_files():
     return {'file_ids': boilerplate.list_files(recursive=True)}
+
 
 def do_process(file_ids):
     file_ids_list = file_ids and file_ids.split(",")
     result = do_process_task(file_ids_list)
     return {"result": result}
-
 
 
 @api.dispatcher.add_method
@@ -131,7 +128,6 @@ def do_query(file_id, query_type):
     return {"error": boilerplate.ERROR_NO_SUCH_FILE}
 
 
-
 @api.dispatcher.add_method
 def query_file(file_id, query_type):
     result = do_query(file_id, query_type)
@@ -142,13 +138,9 @@ def query_file(file_id, query_type):
     return result
 
 
-
 @api.dispatcher.add_method
 def get_task_status(task_id):
     return boilerplate.get_task_status(task_id)
-
-
-
 
 
 @api.dispatcher.add_method
