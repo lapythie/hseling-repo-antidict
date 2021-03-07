@@ -1,0 +1,2 @@
+recursive-include hseling_web_antidict/templates *
+recursive-include hseling_web_antidict/static *

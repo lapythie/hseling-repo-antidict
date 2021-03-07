@@ -1,0 +1,47 @@
+version: '3.4'
+
+x-common-variables: &common-variables
+  HSELING_RPC_ENDPOINT: http://hse-api-web:80/rpc/
+  HSELING_API_ENDPOINT: http://hse-api-web:80/api/
+  RESTRICTED_MODE: 0
+
+services:
+  hse-api-web:
+    build:
+      context: .
+      dockerfile: hseling-api-antidict/Dockerfile
+    ports:
+      - "5000:80"
+    volumes:
+      - type: bind
+        source: ./hseling-api-antidict/hseling_api_antidict
+        target: /app/hseling_api_antidict
+      - type: bind
+        source: ./hseling-data-antidict/api
+        target: /data
+    environment: *common-variables
+
+
+
+
+
+
+  hse-web-web:
+    build:
+      context: .
+      dockerfile: hseling-web-antidict/Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - hse-api-web
+    environment: *common-variables
+    volumes:
+      - type: bind
+        source: ./hseling-web-antidict/hseling_web_antidict
+        target: /app/hseling_web_antidict
+      - type: bind
+        source: ./hseling-web-antidict/hseling_web_antidict/static
+        target: /app/static
+      - type: bind
+        source: ./hseling-data-antidict/web
+        target: /data

@@ -1,0 +1,15 @@
+{
+  "name": "hseling-web-antidict",
+  "version": "1.0.0",
+  "description": "HSE Linguistics WEB: Antidict.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aleksey Dorkin <avdorkin@edu.hse.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "jquery": "^3.5.1"
+  }
+}
