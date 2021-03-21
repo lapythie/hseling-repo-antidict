@@ -9,6 +9,7 @@ from jsonrpc.exceptions import JSONRPCDispatchException
 
 
 from hseling_api_antidict import boilerplate
+from hseling_api_antidict.src import predict
 
 from hseling_lib_antidict.process import process_data
 from hseling_lib_antidict.query import query_data
@@ -146,6 +147,12 @@ def get_task_status(task_id):
 @api.dispatcher.add_method
 def add(a, b):
     return a + b
+
+
+@api.dispatcher.add_method
+def process_input_text(text):
+    text = predict(text)
+    return text
 
 
 if __name__ == "__main__":
