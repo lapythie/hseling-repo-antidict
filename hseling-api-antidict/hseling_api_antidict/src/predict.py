@@ -5,19 +5,26 @@ import regex
 import stopwordsiso
 from typing import List, Union, Dict, Any, Set
 
+LOCAL_FT_PATH = "hseling-data-antidict/api/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
+DOCKER_FT_PATH = "data/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
+
 stops = set("""чей свой из-за вполне вообще вроде сюда аж той
 россия россии россию россией путин путина путину путиным путине
 даю даешь дает даем даете дают""".split())
 stops = stops | stopwordsiso.stopwords("ru")
 
-with open("models/classifier.pkl", "rb") as file:
+with open("hseling-api-antidict/hseling_api_antidict/models/classifier.pkl", "rb") as file:
     loanword_clf = pickle.load(file)
-with open("models/cb_classifier.pkl", "rb") as file:
+with open("hseling-api-antidict//hseling_api_antidict/models/cb_classifier.pkl", "rb") as file:
     obscene_clf = pickle.load(file)
-with open("models/expressive_classifier.pkl", "rb") as file:
+with open("hseling-api-antidict//hseling_api_antidict/models/expressive_classifier.pkl", "rb") as file:
     expressive_clf = pickle.load(file)
 
-model = gensim.models.KeyedVectors.load("models/fasttext/araneum_none_fasttextcbow_300_5_2018.model")
+
+try:
+    model = gensim.models.KeyedVectors.load(LOCAL_FT_PATH)
+except FileNotFoundError:
+    model = gensim.models.KeyedVectors.load(DOCKER_FT_PATH)
 
 
 def statistics(analysis: List[dict]) -> dict:

@@ -9,7 +9,7 @@ from jsonrpc.exceptions import JSONRPCDispatchException
 
 
 from hseling_api_antidict import boilerplate
-from hseling_api_antidict.src import predict
+from hseling_api_antidict.src.predict import predict
 
 from hseling_lib_antidict.process import process_data
 from hseling_lib_antidict.query import query_data
