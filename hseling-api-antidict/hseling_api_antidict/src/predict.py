@@ -6,7 +6,7 @@ import stopwordsiso
 from typing import List, Union, Dict, Any, Set
 
 LOCAL_FT_PATH = "hseling-data-antidict/api/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
-DOCKER_FT_PATH = "data/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
+DOCKER_FT_PATH = "/data/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
 
 stops = set("""чей свой из-за вполне вообще вроде сюда аж той
 россия россии россию россией путин путина путину путиным путине
