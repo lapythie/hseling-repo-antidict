@@ -12,17 +12,18 @@ FROM python:3.8 as production
 
 #COPY --from=hseling_api_build /usr/local/lib/python3.6/site-packages /usr/local/lib/python3.6/site-packages
 #COPY --from=hseling_api_build /usr/lib/python3.6/site-packages /usr/lib/python3.6/site-packages
-
+# 
 COPY --from=hseling_api_build /dependencies /dependencies
 
 #COPY ./hseling-lib-antidict /dependencies/hseling-lib-antidict
 #RUN pip install /dependencies/hseling-lib-antidict
-
+# 
 COPY ./hseling-api-antidict/hseling_api_antidict /app/hseling_api_antidict
 COPY ./hseling-api-antidict/main.py /app/main.py
 
 RUN mkdir -p /data
 
 ENV HSELING_API_ANTIDICT_SETTINGS="/app/hseling_api_antidict/default_settings.py"
+
 
 
