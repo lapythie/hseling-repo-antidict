@@ -36,12 +36,12 @@ services:
       - hse-api-web
     environment: *common-variables
     volumes:
-      - type: bind
-        source: ./hseling-web-antidict/hseling_web_antidict
-        target: /app/hseling_web_antidict
-      - type: bind
-        source: ./hseling-web-antidict/hseling_web_antidict/static
-        target: /app/static
+#      - type: bind
+#        source: ./hseling-web-antidict/hseling_web_antidict
+#        target: /app/hseling_web_antidict
+#      - type: bind
+#        source: ./hseling-web-antidict/hseling_web_antidict/static
+#        target: /app/static
       - type: bind
         source: ./hseling-data-antidict/web
         target: /data

@@ -1,26 +1,18 @@
-FROM hseling/hseling-api-base:python3.6-alpine3.7 as hseling_web_build
+FROM node:lts-alpine as front
 
-LABEL maintainer="Aleksey Dorkin <avdorkin@edu.hse.ru>"
+COPY ./hseling-web-antidict/package*.json ./app/hseling_web_antidict/
 
-RUN mkdir /dependencies
-COPY ./hseling-web-antidict/requirements.txt /dependencies/requirements.txt
-COPY ./hseling-web-antidict/setup.py /dependencies/setup.py
+RUN npm install ./app/hseling_web_antidict/
+COPY ./hseling-web-antidict/ ./app/hseling_web_antidict/
 
-RUN pip install -r /dependencies/requirements.txt
+WORKDIR ./app/hseling_web_antidict/
 
-FROM hseling/hseling-api-base:python3.6-alpine3.7 as hseling_web_production
+RUN npm run build
 
-COPY --from=hseling_web_build /usr/local/lib/python3.6/site-packages /usr/local/lib/python3.6/site-packages
-COPY --from=hseling_web_build /usr/lib/python3.6/site-packages /usr/lib/python3.6/site-packages
+FROM nginx
 
-COPY --from=hseling_web_build /dependencies /dependencies
-
-COPY ./hseling-web-antidict/hseling_web_antidict /app/hseling_web_antidict
-COPY ./hseling-web-antidict/hseling_web_antidict/static /app/static
-COPY ./hseling-web-antidict/main.py /app/main.py
-
-ENV HSELING_WEB_ANTIDICT_SETTINGS="/app/hseling_web_antidict/default_settings.py"
-
-HEALTHCHECK CMD curl --fail http://localhost:8000/web/healthz || exit 1
+COPY --from=front /app/hseling_web_antidict/build /usr/share/nginx/html
+COPY --from=front /app/hseling_web_antidict/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8000
+CMD ["nginx",  "-g", "daemon off;"]

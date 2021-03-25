@@ -1,4 +1,5 @@
-# python
-**/.python-version
-**/__pycache__
-**/*.pyc
+.gitignore
+antidict.md
+README.md
+node_modules
+build

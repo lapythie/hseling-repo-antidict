@@ -6,20 +6,34 @@ import stopwordsiso
 from typing import List, Union, Dict, Any, Set
 
 LOCAL_FT_PATH = "hseling-data-antidict/api/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
-DOCKER_FT_PATH = "data/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
+LOCAL_LOANWORD_CLF_PATH = "hseling-api-antidict/hseling_api_antidict/models/classifier.pkl"
+LOCAL_OBSCENE_CLF_PATH = "hseling-api-antidict//hseling_api_antidict/models/cb_classifier.pkl"
+LOCAL_EXPRESSIVE_CLF_PATH = "hseling-api-antidict//hseling_api_antidict/models/expressive_classifier.pkl"
+
+DOCKER_FT_PATH = "/data/models/fasttext/araneum_none_fasttextcbow_300_5_2018.model"
+DOCKER_LOANWORD_CLF_PATH = "/app/hseling_api_antidict/models/classifier.pkl"
+DOCKER_OBSCENE_CLF_PATH = "/app/hseling_api_antidict/models/cb_classifier.pkl"
+DOCKER_EXPRESSIVE_CLF_PATH = "/app/hseling_api_antidict/models/expressive_classifier.pkl"
 
 stops = set("""чей свой из-за вполне вообще вроде сюда аж той
 россия россии россию россией путин путина путину путиным путине
 даю даешь дает даем даете дают""".split())
 stops = stops | stopwordsiso.stopwords("ru")
 
-with open("hseling-api-antidict/hseling_api_antidict/models/classifier.pkl", "rb") as file:
-    loanword_clf = pickle.load(file)
-with open("hseling-api-antidict//hseling_api_antidict/models/cb_classifier.pkl", "rb") as file:
-    obscene_clf = pickle.load(file)
-with open("hseling-api-antidict//hseling_api_antidict/models/expressive_classifier.pkl", "rb") as file:
-    expressive_clf = pickle.load(file)
-
+try:
+    with open(LOCAL_LOANWORD_CLF_PATH, "rb") as file:
+        loanword_clf = pickle.load(file)
+    with open(LOCAL_OBSCENE_CLF_PATH, "rb") as file:
+        obscene_clf = pickle.load(file)
+    with open(LOCAL_EXPRESSIVE_CLF_PATH, "rb") as file:
+        expressive_clf = pickle.load(file)
+except FileNotFoundError:
+    with open(DOCKER_LOANWORD_CLF_PATH, "rb") as file:
+        loanword_clf = pickle.load(file)
+    with open(DOCKER_OBSCENE_CLF_PATH, "rb") as file:
+        obscene_clf = pickle.load(file)
+    with open(DOCKER_EXPRESSIVE_CLF_PATH, "rb") as file:
+        expressive_clf = pickle.load(file)
 
 try:
     model = gensim.models.KeyedVectors.load(LOCAL_FT_PATH)
