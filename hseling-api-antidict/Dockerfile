@@ -1,4 +1,4 @@
-FROM python:3.8 as hseling_api_build
+FROM hseling/hseling-api-base:python3.7 as hseling_api_build
 
 LABEL maintainer="Aleksey Dorkin <avdorkin@edu.hse.ru>"
 
@@ -8,12 +8,12 @@ COPY ./hseling-api-antidict/requirements.txt /dependencies/requirements.txt
 
 RUN pip install -r /dependencies/requirements.txt
 
-FROM python:3.8 as production
+#FROM hseling/hseling-api-base:python3.7
 
-#COPY --from=hseling_api_build /usr/local/lib/python3.6/site-packages /usr/local/lib/python3.6/site-packages
-#COPY --from=hseling_api_build /usr/lib/python3.6/site-packages /usr/lib/python3.6/site-packages
-# 
-COPY --from=hseling_api_build /dependencies /dependencies
+#COPY --from=hseling_api_build /usr/local/lib/python3.7/site-packages /usr/local/lib/python3.7/site-packages
+#COPY --from=hseling_api_build /usr/lib/python3.7/site-packages /usr/lib/python3.7/site-packages
+
+#COPY --from=hseling_api_build /dependencies /dependencies
 
 #COPY ./hseling-lib-antidict /dependencies/hseling-lib-antidict
 #RUN pip install /dependencies/hseling-lib-antidict
