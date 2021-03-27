@@ -43,13 +43,13 @@ except FileNotFoundError:
 
 def statistics(analysis: List[dict]) -> dict:
     total = len(analysis)
-        loanword = len([t for t in analysis if t["loanword"]])
-        obscene = len([t for t in analysis if t["obscene"]])
-        expressive = len([t for t in analysis
-                          if (t["obscene"] or t["expressive"])])
-        stats = {"loanword_ratio": loanword,
-                 "obscene_ratio": obscene,
-                 "expressive_ratio": expressive}
+    loanword = len([t for t in analysis if t["loanword"]])
+    obscene = len([t for t in analysis if t["obscene"]])
+    expressive = len([t for t in analysis
+                      if (t["obscene"] or t["expressive"])])
+    stats = {"loanword_ratio": loanword,
+             "obscene_ratio": obscene,
+             "expressive_ratio": expressive}
     if total:
         return {k: round(v / total, 2) for k, v in stats.items()}
     else:
